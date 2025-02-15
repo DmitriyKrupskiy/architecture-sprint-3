@@ -1,0 +1,65 @@
+@startuml
+
+!include https://raw.githubusercontent.com/plantuml-stdlib/C4-PlantUML/master/C4_Container.puml
+
+Person(user, "Пользователь", "Optional Description")
+
+Person(admin, "Админ", "Optional Description")
+
+System_Boundary(c1, "User Inteface", ) {
+
+Container(spa, "SPA", "Vue JS", "","js")
+
+Container(mobile_app, "Mobile Application Android/IOS", "", "","js")
+
+}
+
+System_Boundary(c2, "Системауправления отоплением" ) {
+
+Container(admin_api, "API Admin", "java", "Spring")
+
+Container(mobile_api, "API Mobile", "java", "Spring")
+
+Container(core, "CORE", "java", "Spring")
+
+Container(collector, "Сборщик информации с IoT", "java", "Spring")
+
+ContainerDb(database, "Database", "SQL Database", "Stores user registration information, hashed auth credentials", "mysql_server")
+
+ContainerDb(cache, "Redis", "Object Database", "Хранит ID устройств IoT", "mysql_server")
+
+}
+
+System_Boundary(c3, "Дом" ) {
+
+Container(senor, "Датчик", "IoT")
+
+}
+
+Container(senor, "Датчик", "IoT")
+
+Rel(user, mobile_app, "uses", "Мониторинг и управление системой")
+
+Rel(admin,spa, "users", "Администрирование системы")
+
+Rel(mobile_app, mobile_api, "uses", "Мониторинг и управление системой", JSON/HTTPS)
+
+Rel(spa,admin_api, "users", "Администрирование системы", JSON/HTTPS)
+
+Rel(senor,admin_api, "users", "Администрирование системы", JSON/HTTPS)
+
+Rel(admin_api,core, "users", "HTTP")
+
+Rel(admin_api,collector, "users", "HTTP")
+
+Rel(mobile_api,collector, "users", "HTTP")
+
+Rel(mobile_api,core, "users", "HTTP")
+
+Rel(collector, cache, "users", "")
+
+Rel(core, database, "users", "")
+
+Rel(core, collector, "сообщения о новых устройствах", "Kafka")
+
+@enduml

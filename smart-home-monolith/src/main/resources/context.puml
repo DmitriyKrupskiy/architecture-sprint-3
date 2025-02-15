@@ -1,0 +1,25 @@
+@startuml
+
+!include https://raw.githubusercontent.com/plantuml-stdlib/C4-PlantUML/master/C4_Context.puml
+
+' uncomment the following line and comment the first to use locally
+
+' !include C4_Context.puml
+
+title System Context diagram for Smart Home System
+
+Person(user, "User", "A user of smart home system")
+
+System(smart_home_system, "Smart Home System", "Allows users to view information about their home temperature")
+
+System(web_app, "Wep APP", "Web Application", "SPA")
+
+System(sensor, "Sensor", "Send temperature data to system")
+
+Rel(user, web_app, "Uses", "HTTP")
+
+Rel_Back(web_app, smart_home_system, "Web API", "HTTP")
+
+Rel_Back(smart_home_system, sensor, "IO", "HTTP")
+
+@enduml

@@ -1,0 +1,88 @@
+@startuml
+' hide the spot
+
+' hide circle
+
+' avoid problems with angled crows feet
+
+skinparam linetype ortho
+
+entity "User" as e01 {
+
+*id : PK number UUID
+
+--
+
+*collector_id : number <<FK>>
+
+*first_name : text
+
+*last_name : text
+
+*email : text
+
+}
+
+entity "Address" as e04 {
+
+*user_id : PK number UUID
+
+--
+
+*user_id : number <<FK>>
+
+*city : text
+
+*street: text
+
+*house: text
+
+}
+
+entity "Role" as e05 {
+
+*user_id : PK number UUID
+
+--
+
+*user_id : number <<FK>>
+
+*name: text
+
+*description: text
+
+
+}
+
+entity "IoT Device" as e02 {
+
+*device_id : PK number <<generated>>
+
+--
+
+*user_id : number <<FK>>
+
+*description : text
+
+*other_details : text
+
+}
+
+entity "Collector" as e03 {
+
+*collector_id : number UUID
+
+--
+
+device_id : number <<FK>>
+
+other_details : text
+
+}
+
+e02 }|-- e01
+
+e02 }|-- e03
+e05 }|-- e01
+e04 }|-- e01
+@enduml
