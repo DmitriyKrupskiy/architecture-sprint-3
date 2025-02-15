@@ -1,0 +1,54 @@
+@startuml
+!include https://raw.githubusercontent.com/plantuml-stdlib/C4-PlantUML/master/C4_Component.puml
+
+' uncomment the following line and comment the first to use locally
+
+' !include C4_Component.puml
+
+title Component diagram for Heating System - API Application
+
+
+
+
+
+ContainerDb(postgres, "Database", "Users, IoTs, Authorization Info", "Stores user's inforamation and IoT")
+
+Container_Boundary(api, "Core") {
+
+Component(sign, "Auth Controller", "OAuth2", "Checks user authenticated")
+
+Component(userController, "User Controller", "User", "Registeration of new users")
+Component(deviceController, "IoT Controller", "Device", "Registeration of user's devices")
+Component(commandController, "Command IoT Controller", "Command Controller", "Manage of user's devices")
+
+Component(signService, "Auth Controller", "OAuth2", "Checks user authenticated")
+
+Component(userService, "User Controller", "User", "Registeration of new users")
+Component(deviceService, "IoT Controller", "Device", "Registeration of user's devices")
+Component(commandService, "Command IoT Controller", "Command Controller", "Manage of user's devices")
+Component(publisherService, "Publisher", "Publish message", "Kafka")
+Component(dataJdbcRepositiry, "JDBC Repository", "Data access", "JDBC Template")
+
+
+
+Rel(sign, signService, "Uses")
+Rel(userController, userService, "Uses")
+
+Rel(deviceController, deviceService, "Uses")
+
+Rel(commandController, commandService, "Uses")
+
+Rel(signService, dataJdbcRepositiry, "Uses")
+Rel(userService, dataJdbcRepositiry , "Uses")
+
+Rel(deviceService, dataJdbcRepositiry , "Uses")
+Rel(deviceService, publisherService, "Uses")
+
+Rel(commandService, dataJdbcRepositiry , "Uses")
+
+
+
+}
+
+Rel(dataJdbcRepositiry, postgres, "Read/Write JDBC", "Postgres")
+@enduml
